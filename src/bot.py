@@ -13,10 +13,12 @@ import json
 
 class Bot:
 
-    def __init__(self, telegram_token: str, database_path: str) -> None:
+    def __init__(self, telegram_token: str, database_path: str, mute_time_options: str) -> None:
         self.token = telegram_token
         self.database = Database(database_path)
         self.connection = self.database.connection
+        self.mute_time_options = [int(option) for option in mute_time_options.split(',')]
+        print(self.mute_time_options)
         self.setup_bot()
     
 
@@ -111,9 +113,8 @@ class Bot:
     def bot_settings(self, query: CallbackQuery) -> None:
         # if mute time < 30 seconds or > 366 days -> it will be a permanent mute.
         keyboard = []
-        options = [30, 60, 120, 300, 600] # add here some seconds if u want :D
 
-        for option in options:
+        for option in self.mute_time_options:
             text_appended = ""
             icon = " ✔️" if option == self.mute_time else " ❌"
             if option < 60:

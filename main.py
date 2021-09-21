@@ -16,7 +16,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 telegram_token = os.getenv('TELEGRAM_BOT_API_TOKEN')
-bot = Bot(telegram_token, os.getenv('SQLITE_DATABASE_PATH'))
+bot = Bot(telegram_token, os.getenv('SQLITE_DATABASE_PATH'), os.getenv('MUTE_TIME_OPTIONS'))
 
 
 if __name__ == "__main__":

@@ -32,7 +32,7 @@ class Bot:
             cursor = self.connection.cursor()
             cursor.execute("CREATE TABLE bot_settings (enabled INT NOT NULL, mute_time INT NOT NULL);")
             self.connection.commit()
-            cursor.execute("INSERT INTO bot_settings (enabled, mute_time) VALUES (0, 5);")
+            cursor.execute("INSERT INTO bot_settings (enabled, mute_time) VALUES (0, 300);")
             self.connection.commit()
             print("[BOT] => Settings table created successfully")
             self.enabled = 0 # initially, setup enabled to 0 

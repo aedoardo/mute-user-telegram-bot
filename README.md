@@ -1,6 +1,6 @@
 # Mute user telegram bot
 
-This is a bot that allows you to mute for an amount of time an user when he joins in a Telegram group. Then, he will be unmuted.
+This is a bot that allows you to mute for an amount of time an user when he joins in a Telegram (super)group. Then, he will be unmuted. This bot **must be an administrator** of the group in order to mute users.
 
 ## Configuration
 

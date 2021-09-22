@@ -91,7 +91,7 @@ class Bot:
                 
       
     def button(self, update: Update, context: CallbackContext) -> None:
-        user_status = context.bot.get_chat_member(update.callback_query.message.chat.id, update.callback_query.message.from_user.id).status
+        user_status = context.bot.get_chat_member(update.callback_query.message.chat.id, update.callback_query.from_user.id).status
         if user_status != 'creator' and user_status != 'administrator':
             return None
 

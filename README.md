@@ -16,3 +16,5 @@ The configuration is really simple: just copy the content of `configuration.env.
 ## How can I run it?
 
 You can run it just by launching the command: **`python main.py`**. It will create a new database with the `bot_settings` table that contains two fields: `enabled` (a boolean to save the bot status) and `mute_time` that represents the time that the user will be muted when join into the group.
+
+Feel free to contribute to the repository :)!

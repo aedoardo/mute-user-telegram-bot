@@ -18,7 +18,6 @@ class Bot:
         self.database = Database(database_path)
         self.connection = self.database.connection
         self.mute_time_options = [int(option) for option in mute_time_options.split(',')]
-        print(self.mute_time_options)
         self.setup_bot()
     
 
@@ -45,6 +44,10 @@ class Bot:
 
 
     def start(self, update: Update, context: CallbackContext) -> None:
+        user_status = context.bot.get_chat_member(update.message.chat.id, update.message.from_user.id).status
+        if user_status != 'creator' and user_status != 'administrator':
+            return None
+
         update.message.reply_text("Hi, *thank you* for adding me to this group! Don't forget to make me administrator. \nYou can enable the bot by clicking \"*Enable bot*\" and you can change the settings by clicking \"*Bot settings*\".", reply_markup=self.build_main_keyboard(self.enabled), parse_mode="Markdown")
 
 
@@ -88,6 +91,10 @@ class Bot:
                 
       
     def button(self, update: Update, context: CallbackContext) -> None:
+        user_status = context.bot.get_chat_member(update.callback_query.message.chat.id, update.callback_query.message.from_user.id).status
+        if user_status != 'creator' and user_status != 'administrator':
+            return None
+
         query = update.callback_query
         data = json.loads(query.data)
         if data["callback"] == "update_enabled":

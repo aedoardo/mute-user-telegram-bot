@@ -1,3 +1,4 @@
+from logging import Logger
 import sqlite3
 from telegram import Update, ForceReply, ChatMemberUpdated, ChatMember
 from telegram.callbackquery import CallbackQuery
@@ -13,11 +14,12 @@ import json
 
 class Bot:
 
-    def __init__(self, telegram_token: str, database_path: str, mute_time_options: str) -> None:
+    def __init__(self, telegram_token: str, database_path: str, mute_time_options: str, logger: Logger) -> None:
         self.token = telegram_token
         self.database = Database(database_path)
         self.connection = self.database.connection
         self.mute_time_options = [int(option) for option in mute_time_options.split(',')]
+        self.logger = logger
         self.setup_bot()
     
 
@@ -44,11 +46,17 @@ class Bot:
 
 
     def start(self, update: Update, context: CallbackContext) -> None:
-        user_status = context.bot.get_chat_member(update.message.chat.id, update.message.from_user.id).status
-        if user_status != 'creator' and user_status != 'administrator':
-            return None
+        try:
+            if(update.message != None):
+                user_status = context.bot.get_chat_member(update.message.chat.id, update.message.from_user.id).status
+                if user_status != 'creator' and user_status != 'administrator':
+                    return None
 
-        update.message.reply_text("Hi, *thank you* for adding me to this group! Don't forget to make me administrator. \nYou can enable the bot by clicking \"*Enable bot*\" and you can change the settings by clicking \"*Bot settings*\".", reply_markup=self.build_main_keyboard(self.enabled), parse_mode="Markdown")
+                update.message.reply_text("Hi, *thank you* for adding me to this group! Don't forget to make me administrator. \nYou can enable the bot by clicking \"*Enable bot*\" and you can change the settings by clicking \"*Bot settings*\".", reply_markup=self.build_main_keyboard(self.enabled), parse_mode="Markdown")
+            else:
+                self.logger.exception("Cannot handle the edit")
+        except Exception as e:
+            self.logger.exception("Exception in calling start command.")
 
 
     def extract_status_change(self, chat_member_update: ChatMemberUpdated) -> Optional[Tuple[bool, bool]]:
